@@ -8,16 +8,20 @@ import Period from './components/Period';
 import Tittle from './components/Tittle';
 
 function App() {
-  const [initialValue, setInitialValue] = useState(0);
-  const [interestRate, setInterestRate] = useState(0);
-  const [monthlyValue, setMonthlyValue] = useState(0);
-  const [period, setPeriod] = useState(0);
+  const [initialValue, setInitialValue] = useState();
+  const [monthlyValue, setMonthlyValue] = useState();
+  const [interestRate, setInterestRate] = useState();
+  const [period, setPeriod] = useState(5);
 
   const calculateCompoundInterest = () => {
     const taxaDecimal = interestRate / 100;
     let montante = initialValue * Math.pow(1 + taxaDecimal, period);
 
-    // for (let i = 1; i <= period; i++)
+    for (let i = 1; i <= period; i++) {
+      montante += monthlyValue * Math.pow(1 + taxaDecimal, period - i);
+    }
+
+    return montante.toFixed(2);
   }
 
   return (
@@ -29,8 +33,8 @@ function App() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" action="#" method="POST">
 
-            <InitialValue />
-            <MonthlyValue />
+            <InitialValue value={initialValue} onChange={(e) => setInitialValue(Number(e.target.value))} />
+            <MonthlyValue value={monthlyValue} onChange={(e) => setMonthlyValue(Number(e.target.value))} />
             <InterestRate />
             <Period />
             <Button />

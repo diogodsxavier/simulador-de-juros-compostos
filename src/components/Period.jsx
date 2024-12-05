@@ -1,4 +1,5 @@
 function Period() {
+
     return (
         <div>
             <label htmlFor="number" className="block text-sm/6 font-medium text-gray-900">Período (ano)</label>
