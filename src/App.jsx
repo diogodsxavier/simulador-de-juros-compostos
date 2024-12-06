@@ -8,43 +8,55 @@ import Period from './components/Period';
 import Tittle from './components/Tittle';
 
 function App() {
-  const [initialValue, setInitialValue] = useState();
-  const [monthlyValue, setMonthlyValue] = useState();
-  const [interestRate, setInterestRate] = useState();
-  const [period, setPeriod] = useState(5);
+  const [initialValue, setInitialValue] = useState('');
+  const [monthlyValue, setMonthlyValue] = useState('');
+  const [interestRate, setInterestRate] = useState('');
+  const [period, setPeriod] = useState('');
 
   const calculateCompoundInterest = () => {
-    const taxaDecimal = interestRate / 100;
-    let montante = initialValue * Math.pow(1 + taxaDecimal, period);
+    // Taxa de juros em decimal
+    const decimalRate = interestRate / 100;
 
-    for (let i = 1; i <= period; i++) {
-      montante += monthlyValue * Math.pow(1 + taxaDecimal, period - i);
-    }
+    // Montante das contribuições mensais com juros compostos
 
-    return montante.toFixed(2);
+    const initialCapitalAmount = initialValue * Math.pow(1 + decimalRate, period);
+
+    // Montante das contribuições mensais com juros compostos
+
+    const amountContributions = monthlyValue * ((Math.pow(1 + decimalRate, period) - 1) / decimalRate)
+
+    // Montante total
+
+    const totalAmount = initialCapitalAmount + amountContributions;
+
+    // Retorna o valor 
+
+    console.log(totalAmount.toFixed(2));
+
+
+    // Resolver a lógica
+    
   }
 
   return (
     <div>
 
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+
         <Tittle />
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <div className="space-y-6" method="POST">
 
             <InitialValue value={initialValue} onChange={(e) => setInitialValue(Number(e.target.value))} />
             <MonthlyValue value={monthlyValue} onChange={(e) => setMonthlyValue(Number(e.target.value))} />
-            <InterestRate />
-            <Period />
-            <Button />
+            <InterestRate value={interestRate} onChange={(e) => setInterestRate(Number(e.target.value))} />
+            <Period value={period} onChange={(e) => setPeriod(Number(e.target.value))} />
+            <Button result={calculateCompoundInterest} />
 
-          </form>
-
-
+          </div>
         </div>
       </div>
-
     </div>
   )
 }
