@@ -14,27 +14,21 @@ function App() {
   const [period, setPeriod] = useState('');
 
   const calculateCompoundInterest = () => {
-    // Taxa de juros em decimal
-    const decimalRate = interestRate / 100;
+    const initial = parseFloat(initialValue) || 0;
+    const monthly = parseFloat(monthlyValue) || 0;
+    const rate = parseFloat(InterestRate) / 100;
+    const months = parseInt(period) || 0;
+
+    // Montante do capital inicial com juros compostos
+    const initialCapitalAmount = initial * Math.pow(1 + rate, months);
 
     // Montante das contribuições mensais com juros compostos
-
-    const initialCapitalAmount = initialValue * Math.pow(1 + decimalRate, period);
-
-    // Montante das contribuições mensais com juros compostos
-
-    const amountContributions = monthlyValue * ((Math.pow(1 + decimalRate, period) - 1) / decimalRate)
+    const amountContributions = monthly * ((Math.pow(1 + rate, months) - 1) / rate);
 
     // Montante total
-
     const totalAmount = initialCapitalAmount + amountContributions;
 
-    // Retorna o valor 
-
     console.log(totalAmount.toFixed(2));
-
-
-    // Resolver a lógica
     
   }
 
