@@ -6,6 +6,7 @@ import InterestRate from './components/InterestRate';
 import MonthlyValue from './components/MonthlyValue';
 import Period from './components/Period';
 import Tittle from './components/Tittle';
+import Big from 'big.js';
 
 function App() {
   const [initialValue, setInitialValue] = useState('');
@@ -14,22 +15,20 @@ function App() {
   const [period, setPeriod] = useState('');
 
   const calculateCompoundInterest = () => {
-    const initial = parseFloat(initialValue) || 0;
-    const monthly = parseFloat(monthlyValue) || 0;
-    const rate = parseFloat(InterestRate) / 100;
-    const months = parseInt(period) || 0;
+    const initial = new Big(parseFloat(initialValue) || 0);
+    const monthly = new Big(parseFloat(monthlyValue) || 0);
+    const rate = new Big(parseFloat(interestRate) || 0).div(100).div(12);
+    const months = (parseInt(period) || 0) * 12;
 
-    // Montante do capital inicial com juros compostos
-    const initialCapitalAmount = initial * Math.pow(1 + rate, months);
+    const initialCapitalAmount = initial.times(rate.plus(1).pow(months));
 
-    // Montante das contribuições mensais com juros compostos
-    const amountContributions = monthly * ((Math.pow(1 + rate, months) - 1) / rate);
+    const amountContributions = rate.gt(0)
+      ? monthly.times(rate.plus(1).pow(months).minus(1).div(rate))
+      : monthly.times(months);
 
-    // Montante total
-    const totalAmount = initialCapitalAmount + amountContributions;
+    const totalAmount = initialCapitalAmount.plus(amountContributions);
 
     console.log(totalAmount.toFixed(2));
-    
   }
 
   return (
