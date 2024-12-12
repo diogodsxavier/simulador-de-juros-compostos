@@ -1,5 +1,12 @@
 /* eslint-disable react/prop-types */
 function InitialValue({ value, onChange }) {
+    const handleChange = e => {
+        const newValue = e.target.value;
+
+        // Atualiza o valor se estiver dentro do intervalo ou se estiver vazio
+        if (newValue === "" || (newValue >= 1 && newValue <= 1000)) onChange(e);
+    };
+
     return (
         
         <div>
@@ -11,7 +18,7 @@ function InitialValue({ value, onChange }) {
                 <input
                     id="InitialValue"
                     value={value}
-                    onChange={onChange}
+                    onChange={handleChange}
                     type="text"
                     pattern="[0-9]" 
                     required

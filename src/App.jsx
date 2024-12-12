@@ -7,6 +7,7 @@ import MonthlyValue from './components/MonthlyValue';
 import Period from './components/Period';
 import Tittle from './components/Tittle';
 import Big from 'big.js';
+import DeleteButton from './components/deleteButton';
 
 function App() {
   const [initialValue, setInitialValue] = useState('');
@@ -31,6 +32,13 @@ function App() {
     console.log(totalAmount.toFixed(2));
   }
 
+  const clearFields = () => {
+      setInitialValue('');
+      setMonthlyValue('');
+      setInterestRate('');
+      setPeriod('');
+  };
+
   return (
     <div>
 
@@ -46,6 +54,7 @@ function App() {
             <InterestRate value={interestRate} onChange={(e) => setInterestRate(Number(e.target.value))} />
             <Period value={period} onChange={(e) => setPeriod(Number(e.target.value))} />
             <Button result={calculateCompoundInterest} />
+            <DeleteButton clearFiels={clearFields} />
 
           </div>
         </div>
