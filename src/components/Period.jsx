@@ -1,21 +1,24 @@
 // eslint-disable-next-line react/prop-types
 function Period({ value, onChange }) {
-    const handleChange = e => {
-        const newValue = e.target.value;
+    const handleChange = (e) => {
+        let newValue = e.target.value.replace(/\D/g, "");
 
-        // Atualiza o valor se estiver dentro do intervalo ou se estiver vazio
-        if (newValue === "" || (newValue >= 1 && newValue <= 1000)) onChange(e);
+        onChange(newValue);
+
+        if (newValue > 1000) {
+            alert('Valor não pode ser maior do que 1.000 anos.');
+            onChange(1);
+            return
+        }
     };
 
     return (
         <div>
-            <label htmlFor="number" className="block text-sm/6 font-medium text-gray-900">Período (ano)</label>
+            <label htmlFor="Perios" className="block text-sm/6 font-medium text-gray-900">Período (ano)</label>
             <div className="mt-2">
                 <input
                     id="InitialValue"
                     value={value}
-                    min={1}
-                    max={1000}
                     onChange={handleChange}
                     type="text"
                     pattern="[0-9]"

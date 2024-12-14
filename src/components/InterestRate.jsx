@@ -9,7 +9,7 @@ function InterestRate({ value, onChange }) {
 
     return (
         <div>
-            <label htmlFor="number" className="block text-sm/6 font-medium text-gray-900">Taxa de Juros (anual)</label>
+            <label htmlFor="InterestRate" className="block text-sm/6 font-medium text-gray-900">Taxa de Juros (anual)</label>
             <div className="mt-2">
                 <input
                     id="InterestRate"

@@ -1,11 +1,30 @@
 // eslint-disable-next-line react/prop-types
 function MonthlyValue({ value, onChange }) {
-    const handleChange = e => {
-        const newValue = e.target.value;
+    const handleChange = (e) => {
+        let newValue = e.target.value.replace(/\D/g, "");
 
-        // Atualiza o valor se estiver dentro do intervalo ou se estiver vazio
-        if (newValue === "" || (newValue >= 1 && newValue <= 1000)) onChange(e);
+        onChange(newValue);
+
+        if(newValue > 400000000000000) {
+            alert('Valor não pode ser maior que R$400.000.000.000,00');
+            onChange(100000);
+            return
+        }
+
+        if(newValue <= 0) {
+            alert('Valor não pode zero.');
+            onChange(100000);
+            return
+        }
+
     };
+
+    const formattedValue =
+        new Intl.NumberFormat("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+            minimumFractionDigits: 2,
+        }).format(value / 100);
 
     return (
         <div>
@@ -17,7 +36,7 @@ function MonthlyValue({ value, onChange }) {
                     id="monthlyValue"
                     type="text"
                     pattern="[0-9]"
-                    value={value}
+                    value={formattedValue}
                     onChange={handleChange}
                     placeholder='R$00,00'
                     required

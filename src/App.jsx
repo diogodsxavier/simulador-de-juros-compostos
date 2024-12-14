@@ -7,13 +7,13 @@ import MonthlyValue from './components/MonthlyValue';
 import Period from './components/Period';
 import Tittle from './components/Tittle';
 import Big from 'big.js';
-import DeleteButton from './components/deleteButton';
+import ClearField from './components/ClearField';
 
 function App() {
-  const [initialValue, setInitialValue] = useState('');
-  const [monthlyValue, setMonthlyValue] = useState('');
-  const [interestRate, setInterestRate] = useState('');
-  const [period, setPeriod] = useState('');
+  const [initialValue, setInitialValue] = useState(100000);
+  const [monthlyValue, setMonthlyValue] = useState(30000);
+  const [interestRate, setInterestRate] = useState(8);
+  const [period, setPeriod] = useState(1);
 
   const calculateCompoundInterest = () => {
     const initial = new Big(parseFloat(initialValue) || 0);
@@ -29,33 +29,39 @@ function App() {
 
     const totalAmount = initialCapitalAmount.plus(amountContributions);
 
-    console.log(totalAmount.toFixed(2));
+    console.log(totalAmount.toFixed(0));
   }
 
   const clearFields = () => {
-      setInitialValue('');
-      setMonthlyValue('');
-      setInterestRate('');
-      setPeriod('');
+    setInitialValue('');
+    setMonthlyValue('');
+    setInterestRate('');
+    setPeriod('');
   };
+
+  const handleInitialValueChange = (rawValue) => {
+    setInitialValue(rawValue);
+  };
+
+  const handleMonthlyValueChange = (rawValue) => {
+    setMonthlyValue(rawValue);
+  }
+  const handlePeriodValueChange = (rawValue) => {
+    setPeriod(rawValue);
+  }
 
   return (
     <div>
-
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-
         <Tittle />
-
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <div className="space-y-6" method="POST">
-
-            <InitialValue value={initialValue} onChange={(e) => setInitialValue(Number(e.target.value))} />
-            <MonthlyValue value={monthlyValue} onChange={(e) => setMonthlyValue(Number(e.target.value))} />
+            <InitialValue value={initialValue} onChange={handleInitialValueChange} />
+            <MonthlyValue value={monthlyValue} onChange={handleMonthlyValueChange} />
             <InterestRate value={interestRate} onChange={(e) => setInterestRate(Number(e.target.value))} />
-            <Period value={period} onChange={(e) => setPeriod(Number(e.target.value))} />
+            <Period value={period} onChange={handlePeriodValueChange} />
             <Button result={calculateCompoundInterest} />
-            <DeleteButton clearFiels={clearFields} />
-
+            <ClearField clearFields={clearFields} />
           </div>
         </div>
       </div>
