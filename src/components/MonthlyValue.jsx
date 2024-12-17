@@ -5,18 +5,11 @@ function MonthlyValue({ value, onChange }) {
 
         onChange(newValue);
 
-        if(newValue > 400000000000000) {
+        if(newValue > 40000000000000) {
             alert('Valor não pode ser maior que R$400.000.000.000,00');
             onChange(100000);
             return
         }
-
-        if(newValue <= 0) {
-            alert('Valor não pode zero.');
-            onChange(100000);
-            return
-        }
-
     };
 
     const formattedValue =

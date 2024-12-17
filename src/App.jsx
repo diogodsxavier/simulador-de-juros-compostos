@@ -19,17 +19,41 @@ function App() {
     const initial = new Big(parseFloat(initialValue) || 0);
     const monthly = new Big(parseFloat(monthlyValue) || 0);
     const rate = new Big(parseFloat(interestRate) || 0).div(100).div(12);
-    const months = (parseInt(period) || 0) * 12;
+    const years = (parseInt(period) || 0) * 12;
 
-    const initialCapitalAmount = initial.times(rate.plus(1).pow(months));
+    // Montante do capital inicial com juros compostos
+    const initialCapitalAmount = initial.times(rate.plus(1).pow(years));
 
+    // Montante das contribuições mensais com juros compostos
     const amountContributions = rate.gt(0)
-      ? monthly.times(rate.plus(1).pow(months).minus(1).div(rate))
-      : monthly.times(months);
+      ? monthly.times(rate.plus(1).pow(years).minus(1).div(rate))
+      : monthly.times(years);
 
+    // Montante total
     const totalAmount = initialCapitalAmount.plus(amountContributions);
 
-    console.log(totalAmount.toFixed(0));
+    // Juros compostos (montante total - capital investido)
+    const compoundInterest = totalAmount.minus(initial.plus(monthly.times(years)));
+
+    const totalAmountRounded = totalAmount.toFixed(2);
+    const compoundInterestRounded = compoundInterest.toFixed(2);
+
+    // Formatar os valores para exibição
+    const formattedTotalAmounnt = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 2,
+    }).format(totalAmountRounded);
+
+    const formattedCompoundInterest = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 2,
+    }).format(compoundInterestRounded);
+
+    console.log(`Montante total ${formattedTotalAmounnt}`);
+    console.log(`Juros compostos ${formattedCompoundInterest}`);
+    
   }
 
   const clearFields = () => {
