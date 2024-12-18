@@ -1,23 +1,26 @@
 /* eslint-disable react/prop-types */
 function InitialValue({ value, onChange }) {
     const handleChange = (e) => {
-        let newValue = e.target.value.replace(/\D/g, "");
+        let rawValue = e.target.value.replace(/\D/g, "");
 
-        onChange(newValue);
-
-        if (newValue > 40000000000000) {
+        if (rawValue > 40000000000000) {
             alert('Valor não pode ser maior que R$400.000.000.000,00');
             onChange(100000);
             return
         }
+
+        const numericValue = parseInt(rawValue, 10) || 0;
+        onChange({ target: { value: numericValue } });
     };
 
     const formattedValue =
-        new Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-            minimumFractionDigits: 2,
-        }).format(value / 100);
+        value
+            ? new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+                minimumFractionDigits: 2,
+            }).format(value / 100)
+            : '';
 
     return (
         <div>
