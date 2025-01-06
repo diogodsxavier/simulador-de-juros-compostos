@@ -14,6 +14,7 @@ function App() {
   const [monthlyValue, setMonthlyValue] = useState(30000);
   const [interestRate, setInterestRate] = useState(8);
   const [period, setPeriod] = useState(2);
+  const [result, setResult] = useState(null);
 
   const calculateCompoundInterest = () => {
     // const initial = new Big(parseFloat(initialValue) || 0);
@@ -104,4 +105,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

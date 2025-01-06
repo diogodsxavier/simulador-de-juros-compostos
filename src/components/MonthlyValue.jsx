@@ -1,26 +1,24 @@
 // eslint-disable-next-line react/prop-types
 function MonthlyValue({ value, onChange }) {
     const handleChange = (e) => {
-        let rawValue = e.target.value.replace(/\D/g, "");
+        let rawValue = e.target.value.replace(/[^\d]/g, "");
 
-        if (rawValue > 40000000000000) {
+        if (parseInt(rawValue, 10) > 40000000000000) {
             alert('Valor não pode ser maior que R$400.000.000.000,00');
-            onChange(100000);
             return
         }
 
-        const numericValue = parseInt(rawValue, 10) || 0;
-        onChange({ target: { value: numericValue } });
+        onChange(parseInt(rawValue, 10) || 0);
     };
 
     const formattedValue =
-        value
+        value !== undefined && value !== null
             ? new Intl.NumberFormat("pt-BR", {
                 style: "currency",
                 currency: "BRL",
                 minimumFractionDigits: 2,
             }).format(value / 100)
-            : '';
+            : "";
 
     return (
         <div>
