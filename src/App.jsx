@@ -1,44 +1,36 @@
 import { useState } from 'react';
 import './App.css'
-import Button from './components/Button';
 import InitialValue from './components/InitialValue';
 import InterestRate from './components/InterestRate';
 import MonthlyValue from './components/MonthlyValue';
 import Period from './components/Period';
 import Tittle from './components/Tittle';
 import Big from 'big.js';
-import ClearField from './components/ClearField';
 
 function App() {
   const [initialValue, setInitialValue] = useState(100000);
   const [monthlyValue, setMonthlyValue] = useState(30000);
   const [interestRate, setInterestRate] = useState(8);
-  const [period, setPeriod] = useState(2);
+  const [period, setPeriod] = useState(1);
+
+  const handleInitialValueChange = (rawValue) => setInitialValue(rawValue);
+  const handleMonthlyValueChange = (rawValue) => setMonthlyValue(rawValue);
+  const handlePeriodValueChange = (rawValue) => setPeriod(rawValue);
 
   const calculateCompoundInterest = () => {
-    // const initial = new Big(parseFloat(initialValue) / 100 || 0);
-    // const monthly = new Big(parseFloat(monthlyValue) / 100 || 0);
     const initial = new Big(initialValue);
     const monthly = new Big(monthlyValue);
-    // const annualRate = parseFloat(interestRate) || 0;
     const annualRate = new Big(parseFloat(interestRate) / 100);
     const years = parseInt(period) || 0;
     const monthlyRate = annualRate.div(12);
     const totalMonths = years * 12;
 
     // Montante do capital inicial com juros compostos
-    // const initialCapitalAmount = initial * Math.pow(1 + monthlyRate, totalMonths);
     const initialCapitalAmount = initial.times(
       new Big(Math.pow(1 + monthlyRate.toNumber(), totalMonths))
     );
 
-
     // Montante das contribuições mensais com juros compostos
-    // const amountContributions = 
-    //   monthlyRate > 0
-    //     ? monthly * (Math.pow(1 + monthlyRate, totalMonths) - 1).div(monthlyRate)
-    //     : monthly.times(totalMonths)
-
     let amountContributions;
     if (monthlyRate.gt(0)) {
       const factor = new Big(Math.pow(1 + monthlyRate.toNumber(), totalMonths) - 1);
@@ -74,28 +66,37 @@ function App() {
       minimumFractionDigits: 2,
     }).format(compoundInterest.div(100).toNumber());
 
-    console.log(`Montante total ${formattedTotalAmounnt}`);
-    console.log(`Total investido ${formattedTotalInvested}`);
-    console.log(`Juros compostos ${formattedCompoundInterest}`);
+    return (
+      <div className="bg-white py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <dl className="flex flex-col items-center gap-y-16 text-center lg:flex-row lg:gap-x-12 lg:justify-center">
+            {/* Valor Final */}
+            <div className="flex flex-col items-center gap-y-4">
+              <dt className="text-base text-gray-600 sm:text-lg">Valor Final</dt>
+              <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+                {formattedTotalAmounnt}
+              </dd>
+            </div>
 
-  }
+            {/* Total Investido */}
+            <div className="flex flex-col items-center gap-y-4">
+              <dt className="text-base text-gray-600 sm:text-lg">Total Investido</dt>
+              <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+                {formattedTotalInvested}
+              </dd>
+            </div>
 
-  const clearFields = () => {
-    setInitialValue('');
-    setMonthlyValue('');
-    setInterestRate('');
-    setPeriod('');
-  };
-
-  const handleInitialValueChange = (rawValue) => {
-    setInitialValue(rawValue);
-  };
-
-  const handleMonthlyValueChange = (rawValue) => {
-    setMonthlyValue(rawValue);
-  }
-  const handlePeriodValueChange = (rawValue) => {
-    setPeriod(rawValue);
+            {/* Juros Compostos */}
+            <div className="flex flex-col items-center gap-y-4">
+              <dt className="text-base text-gray-600 sm:text-lg">Juros Compostos</dt>
+              <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+                {formattedCompoundInterest}
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -108,8 +109,8 @@ function App() {
             <MonthlyValue value={monthlyValue} onChange={handleMonthlyValueChange} />
             <InterestRate value={interestRate} onChange={(e) => setInterestRate(Number(e.target.value))} />
             <Period value={period} onChange={handlePeriodValueChange} />
-            <Button result={calculateCompoundInterest} />
-            <ClearField clearFields={clearFields} />
+            {/* <Button result={calculateCompoundInterest} /> */}
+            {calculateCompoundInterest()}
           </div>
         </div>
       </div>
