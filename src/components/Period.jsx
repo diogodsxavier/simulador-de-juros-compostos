@@ -5,8 +5,8 @@ function Period({ value, onChange }) {
 
         onChange(newValue);
 
-        if (newValue > 116) {
-            alert('Valor não pode ser maior do que 116 anos.');
+        if (newValue > 110) {
+            alert('Valor não pode ser maior do que 110 anos.');
             onChange(1);
             return
         }

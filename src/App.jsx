@@ -6,6 +6,7 @@ import MonthlyValue from './components/MonthlyValue';
 import Period from './components/Period';
 import Tittle from './components/Tittle';
 import Big from 'big.js';
+import ResultStyle from './components/ResultStyle';
 
 function App() {
   const [initialValue, setInitialValue] = useState(100000);
@@ -70,29 +71,9 @@ function App() {
       <div className="bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <dl className="flex flex-col items-center gap-y-16 text-center lg:flex-row lg:gap-x-12 lg:justify-center">
-            {/* Valor Final */}
-            <div className="flex flex-col items-center gap-y-4">
-              <dt className="text-base text-gray-600 sm:text-lg">Valor Final</dt>
-              <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
-                {formattedTotalAmounnt}
-              </dd>
-            </div>
-
-            {/* Total Investido */}
-            <div className="flex flex-col items-center gap-y-4">
-              <dt className="text-base text-gray-600 sm:text-lg">Total Investido</dt>
-              <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
-                {formattedTotalInvested}
-              </dd>
-            </div>
-
-            {/* Juros Compostos */}
-            <div className="flex flex-col items-center gap-y-4">
-              <dt className="text-base text-gray-600 sm:text-lg">Juros Compostos</dt>
-              <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
-                {formattedCompoundInterest}
-              </dd>
-            </div>
+            <ResultStyle dt={'Valor Final'} dd={formattedTotalAmounnt} />
+            <ResultStyle dt={'Total Investido'} dd={formattedTotalInvested} />
+            <ResultStyle dt={'Juros Compostos'} dd={formattedCompoundInterest} />
           </dl>
         </div>
       </div>
